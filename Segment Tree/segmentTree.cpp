@@ -8,7 +8,6 @@ public:
 		vector<int> tmp(v.size(), 0);
 		data.insert(data.begin(), tmp.begin(), tmp.end());
 		for(int i = 0, size = v.size(); i < size; ++i) update(i, v[i]); 
-		print(data);
 	}
 	int query(size_t i, size_t j) {
 		i += size; j += size;
