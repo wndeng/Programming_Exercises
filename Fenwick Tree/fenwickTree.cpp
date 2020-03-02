@@ -3,18 +3,18 @@
 class FenwickTree {
 public:
 	FenwickTree(const vector<int>& ini) {
-		size = ini.size();
+		size = ini.size()+1;
 		treeVec = vector<int>(size, 0);
 		dataVec = vector<int>(size, 0);
 		for(size_t i = 0; i < size; ++i) update(i, ini[i]);
 	}
 	void update(size_t pos, int val) {
+		++pos;
 		if(pos >= size) return;
 		int dif = val - dataVec[pos];
 		dataVec[pos] = val;
-		++pos;
 		while(pos <= size) {
-			treeVec[pos-1] += dif;
+			treeVec[pos] += dif;
 			pos += pos&-pos;
 		}
 	}
@@ -24,11 +24,11 @@ public:
 	}
 private:
 	int getSum(size_t pos) {
-		if(pos < 0) return 0;
 		++pos;
+		if(pos < 1) return 0;
 		int sum = 0;
 		while(pos >= 1) {
-			sum += treeVec[pos-1];
+			sum += treeVec[pos];
 			pos -= pos&-pos;
 		}
 		return sum;
