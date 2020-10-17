@@ -1,19 +1,17 @@
 #include "../util/util.h"
 
-template<class T>
 class my_priority_queue {
 public:
 	my_priority_queue() {}
 	
 	// decrease top key freq by 1, return key val
-	static int remove(int val) {
-		auto &[v, l]{data[0]};
+	int remove() {
+		auto &[v, _]{data[0]};
 		decreaseKey(0);	
-
-			
+		return v;
 	}
 	// increase frequence of val by 1.
-	static void add(int val, int i) {
+	void add(int val, int i) {
 		if(!index.count(val)) {
 			index[val] = data.size();
 			data.emplace_back(val, {i});
@@ -26,6 +24,9 @@ public:
 	}
 
 private:
+	bool greaterThan(int i, int j) {
+		return data[i].second.size() == data[j].second.size() ? data[i].second.back() > data[].second.back() : data[i].second.size() > data[j].second.size();
+	}
 	void increaseKey(int i) {
 		while(i && greaterThan(i, parent(i))) {
 			std::swap(data[i], data[j]);
@@ -34,10 +35,13 @@ private:
 	}
 
 	void decreaseKey(int i) {
-		int idx{index[val]};
-		std::swap(i, data[data.size()-1]);
-		data.pop_back();
-		int [l, r]{children(i)};
+		auto [_, l]{data[i]};
+		if(l.size() == 1) {
+			std::swap(data[i], data[data.size()-1]);
+			data.pop_back();
+		}
+		l.pop_back();	
+		auto [l, r]{children(i)};
 		while(l || r) {
 			int max_{l == 0 ? r : r == 0 ? l : greaterThan(l, r) ? l : r};
 			if(greaterThan(i, max_)) return;
@@ -46,7 +50,6 @@ private:
 				i = max_i;
 			}
 		}
-		
 	}
 
 	std::pair<int,int> children(int i) {
@@ -54,16 +57,19 @@ private:
 		return {a, b};
 	}
 
-	static inline int parent(i) {
+	static inline int parent(int i) {
 		return i == 0 ? 0 : (i-1)>>1;	
 	}
 
 	std::unordered_map<int,int> index;	
-	std::vector<std::pair<int,std::list<int>> data;
+	std::vector<std::pair<int,std::list<int>>> data;
 };
 
 int main() {
-	auto f = [](const auto& a, const auto& b) {return a < b;};
-	test<int> t(f);
-	std::cout << t.run(2, 3) << std::endl;
+	int i{0};
+	my_priority_queue pq();
+	pq.add(1, i++);
+	pq.add(2, i++);
+	pq.add(3, i++);
+	std::cout << pq.remove() << endl;
 }
