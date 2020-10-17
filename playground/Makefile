@@ -4,7 +4,7 @@ CC = g++
 
 # execution flags
 
-CFLAGS = -std=c++11 -Wall -g #-Werror
+CFLAGS = -std=c++17 -Wall -g #-Werror
 
 # Sources (all files ending in .c)
 
